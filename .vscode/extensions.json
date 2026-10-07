@@ -1,8 +1,8 @@
 {
-  "recommendations": [
-    "rust-lang.rust-analyzer",
-    "tauri-apps.tauri-vscode",
-    "bradlc.vscode-tailwindcss",
-    "dbaeumer.vscode-eslint"
-  ]
+	"recommendations": [
+		"biomejs.biome",
+		"rust-lang.rust-analyzer",
+		"tauri-apps.tauri-vscode",
+		"bradlc.vscode-tailwindcss"
+	]
 }

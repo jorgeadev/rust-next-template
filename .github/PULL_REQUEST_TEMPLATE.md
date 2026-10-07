@@ -8,7 +8,7 @@
 
 ## Checklist
 
-- [ ] `npm run check` passes
-- [ ] `npm run rust:test` passes
-- [ ] `npm run rust:clippy` passes (if Rust changed)
-- [ ] `npm run build` passes (if the frontend changed)
+- [ ] `pnpm check` passes
+- [ ] `pnpm rust:test` passes
+- [ ] `pnpm rust:clippy` passes (if Rust changed)
+- [ ] `pnpm build` passes (if the frontend changed)

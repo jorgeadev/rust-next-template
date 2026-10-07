@@ -1,45 +1,47 @@
 {
-  "name": "rust-next-template",
-  "version": "0.1.0",
-  "private": true,
-  "description": "A desktop app template pairing a Rust core (Tauri) with a statically exported Next.js frontend.",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jorgeadev/rust-next-template"
-  },
-  "engines": {
-    "node": ">=20.9.0"
-  },
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint",
-    "typecheck": "next typegen && tsc --noEmit",
-    "check": "npm run lint && npm run typecheck",
-    "tauri": "tauri",
-    "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build",
-    "rust:fmt": "cargo fmt --manifest-path src-tauri/Cargo.toml",
-    "rust:clippy": "cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets -- -D warnings",
-    "rust:test": "cargo test --manifest-path src-tauri/Cargo.toml"
-  },
-  "dependencies": {
-    "@tauri-apps/api": "^2.12.1",
-    "next": "16.4.0",
-    "react": "19.3.0",
-    "react-dom": "19.3.0"
-  },
-  "devDependencies": {
-    "@tailwindcss/turbopack": "^4",
-    "@tauri-apps/cli": "^2.12.1",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.4.0",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+	"name": "rust-next-template",
+	"version": "0.1.0",
+	"private": true,
+	"description": "A desktop app template pairing a Rust core (Tauri) with a statically exported Next.js frontend.",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jorgeadev/rust-next-template"
+	},
+	"packageManager": "pnpm@12.9.1",
+	"engines": {
+		"node": ">=20.9.0"
+	},
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "biome check",
+		"lint:fix": "biome check --write",
+		"format": "biome format --write",
+		"typecheck": "next typegen && tsc --noEmit",
+		"check": "pnpm lint && pnpm typecheck",
+		"tauri": "tauri",
+		"tauri:dev": "tauri dev",
+		"tauri:build": "tauri build",
+		"rust:fmt": "cargo fmt --manifest-path src-tauri/Cargo.toml",
+		"rust:clippy": "cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets -- -D warnings",
+		"rust:test": "cargo test --manifest-path src-tauri/Cargo.toml"
+	},
+	"dependencies": {
+		"@tauri-apps/api": "2.12.1",
+		"next": "16.4.0",
+		"react": "19.3.0",
+		"react-dom": "19.3.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.5.15",
+		"@tailwindcss/turbopack": "4.3.3",
+		"@tauri-apps/cli": "2.12.1",
+		"@types/node": "26.6.4",
+		"@types/react": "19.3.0",
+		"@types/react-dom": "19.3.0",
+		"tailwindcss": "4.3.3",
+		"typescript": "7.0.2"
+	}
 }

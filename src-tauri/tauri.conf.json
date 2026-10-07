@@ -1,47 +1,47 @@
 {
-  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "rust-next-template",
-  "version": "../package.json",
-  "identifier": "com.jorgeadev.rustnexttemplate",
-  "build": {
-    "frontendDist": "../out",
-    "devUrl": "http://localhost:3000",
-    "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build"
-  },
-  "app": {
-    "windows": [
-      {
-        "title": "Rust + Next.js Template",
-        "width": 1080,
-        "height": 720,
-        "minWidth": 640,
-        "minHeight": 480,
-        "resizable": true,
-        "fullscreen": false,
-        "center": true
-      }
-    ],
-    "security": {
-      "csp": null
-    }
-  },
-  "bundle": {
-    "active": true,
-    "targets": "all",
-    "category": "DeveloperTool",
-    "shortDescription": "A desktop app template built with Tauri and Next.js.",
-    "longDescription": "A desktop application template pairing a Rust core (Tauri) with a statically exported Next.js frontend.",
-    "copyright": "Copyright (c) 2026 jorgeadev. MIT licensed.",
-    "icon": [
-      "icons/32x32.png",
-      "icons/128x128.png",
-      "icons/128x128@2x.png",
-      "icons/icon.icns",
-      "icons/icon.ico"
-    ],
-    "android": {
-      "debugApplicationIdSuffix": ".debug"
-    }
-  }
+	"$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+	"productName": "rust-next-template",
+	"version": "../package.json",
+	"identifier": "com.jorgeadev.rustnexttemplate",
+	"build": {
+		"frontendDist": "../out",
+		"devUrl": "http://localhost:3000",
+		"beforeDevCommand": "pnpm dev",
+		"beforeBuildCommand": "pnpm build"
+	},
+	"app": {
+		"windows": [
+			{
+				"title": "Rust + Next.js Template",
+				"width": 1080,
+				"height": 720,
+				"minWidth": 640,
+				"minHeight": 480,
+				"resizable": true,
+				"fullscreen": false,
+				"center": true
+			}
+		],
+		"security": {
+			"csp": null
+		}
+	},
+	"bundle": {
+		"active": true,
+		"targets": "all",
+		"category": "DeveloperTool",
+		"shortDescription": "A desktop app template built with Tauri and Next.js.",
+		"longDescription": "A desktop application template pairing a Rust core (Tauri) with a statically exported Next.js frontend.",
+		"copyright": "Copyright (c) 2026 jorgeadev. MIT licensed.",
+		"icon": [
+			"icons/32x32.png",
+			"icons/128x128.png",
+			"icons/128x128@2x.png",
+			"icons/icon.icns",
+			"icons/icon.ico"
+		],
+		"android": {
+			"debugApplicationIdSuffix": ".debug"
+		}
+	}
 }

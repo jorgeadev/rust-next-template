@@ -8,5 +8,5 @@ export { isTauri };
  * `tauri::generate_handler![]`.
  */
 export function greet(name: string) {
-  return invoke<string>("greet", { name });
+	return invoke<string>("greet", { name });
 }

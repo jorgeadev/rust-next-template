@@ -37,10 +37,12 @@ jobs:
             librsvg2-dev \
             patchelf
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v5
         with:
           node-version: 24
-          cache: npm
+          cache: pnpm
 
       - uses: dtolnay/rust-toolchain@stable
         with:
@@ -51,7 +53,7 @@ jobs:
           workspaces: src-tauri
           key: ${{ matrix.args }}
 
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
 
       - uses: tauri-apps/tauri-action@v0
         env:

@@ -1,0 +1,12 @@
+allowBuilds:
+  unrs-resolver: true
+
+# Always save dependencies with an exact version (no `^` or `~`).
+saveExact: true
+
+# next@16.4.0 (and its @next/* platform packages) were published less than the
+# default 24h `minimumReleaseAge` ago. Keep them installable; the version is
+# pinned exactly in package.json.
+minimumReleaseAgeExclude:
+  - next@16.4.0
+  - "@next/*"

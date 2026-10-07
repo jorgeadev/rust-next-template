@@ -19,14 +19,15 @@ The frontend builds to plain HTML/CSS/JS with `output: "export"`, so there is no
 ## Requirements
 
 - **Node.js** 20.9 or newer (24 recommended)
+- **pnpm** 12 or newer (the version is pinned via `packageManager` in `package.json`)
 - **Rust** stable with `rustfmt` and `clippy` (see `rust-toolchain.toml`)
 - **Platform dependencies** for Tauri: [prerequisites guide](https://v2.tauri.app/start/prerequisites/)
 
 ## Quick start
 
 ```bash
-npm install
-npm run tauri:dev
+pnpm install
+pnpm tauri:dev
 ```
 
 The first run compiles the Rust core, which takes a few minutes. Later runs are incremental.
@@ -35,14 +36,17 @@ The first run compiles the Rust core, which takes a few minutes. Later runs are 
 
 | Command                 | What it does                                                                |
 | ----------------------- | --------------------------------------------------------------------------- |
-| `npm run tauri:dev`     | Runs the desktop app with hot reload for both the UI and the Rust core.     |
-| `npm run tauri:build`   | Bundles an installer for the current OS into `src-tauri/target/release/bundle/`. |
-| `npm run dev`           | Browser preview of the UI at `localhost:3000` (no Rust bridge).             |
-| `npm run build`         | Static export of the frontend into `out/`.                                  |
-| `npm run check`         | ESLint plus TypeScript typechecking.                                        |
-| `npm run rust:test`     | Runs the Rust unit tests.                                                   |
-| `npm run rust:clippy`   | Runs Clippy with warnings denied.                                           |
-| `npm run rust:fmt`      | Formats the Rust code.                                                      |
+| `pnpm tauri:dev`        | Runs the desktop app with hot reload for both the UI and the Rust core.     |
+| `pnpm tauri:build`      | Bundles an installer for the current OS into `src-tauri/target/release/bundle/`. |
+| `pnpm dev`              | Browser preview of the UI at `localhost:3000` (no Rust bridge).             |
+| `pnpm build`            | Static export of the frontend into `out/`.                                  |
+| `pnpm lint`             | Checks formatting and lint rules with Biome.                                |
+| `pnpm lint:fix`         | Applies Biome formatting and safe lint fixes.                               |
+| `pnpm typecheck`        | Generates route types and runs TypeScript.                                  |
+| `pnpm check`            | Biome plus TypeScript typechecking.                                         |
+| `pnpm rust:test`        | Runs the Rust unit tests.                                                   |
+| `pnpm rust:clippy`      | Runs Clippy with warnings denied.                                           |
+| `pnpm rust:fmt`         | Formats the Rust code.                                                      |
 
 ## Project structure
 
@@ -91,7 +95,7 @@ Permissions for plugins and APIs live in `src-tauri/capabilities/default.json`. 
 The app version has a single source of truth: `package.json`. `tauri.conf.json` reads it via `"version": "../package.json"`.
 
 ```bash
-npm version patch        # or minor / major
+pnpm version patch        # or minor / major
 git push --follow-tags
 ```
 
@@ -101,7 +105,7 @@ Pushing a `v*` tag runs `.github/workflows/release.yml` and creates a **draft** 
 
 - [ ] Click **Use this template** on GitHub (or push the files to a fresh repository), then enable it as a template in **Settings → General → Template repository**.
 - [ ] Rename the app: `productName` and the unique `identifier` (reverse-DNS, e.g. `com.yourname.yourapp`) in `src-tauri/tauri.conf.json`.
-- [ ] Replace the icons: `npx tauri icon path/to/icon.png`.
+- [ ] Replace the icons: `pnpm tauri icon path/to/icon.png`.
 - [ ] Update name, description, and repository URLs in `package.json`, `src-tauri/Cargo.toml`, and this README.
 - [ ] Update the copyright line in `LICENSE`.
 - [ ] Set a Content Security Policy for `app.security.csp` in `src-tauri/tauri.conf.json` before shipping (see [Tauri security](https://v2.tauri.app/security/csp/)).

@@ -5,8 +5,8 @@ Thanks for helping improve the template. This project follows the [Contributor C
 ## Setup
 
 ```bash
-npm install
-npm run tauri:dev
+pnpm install
+pnpm tauri:dev
 ```
 
 See the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/) for the platform packages the Rust core needs.
@@ -16,11 +16,12 @@ See the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/) for the
 Run everything CI runs:
 
 ```bash
-npm run check          # ESLint + TypeScript
-npm run rust:fmt       # or `npm run rust:fmt` to apply formatting
-npm run rust:clippy
-npm run rust:test
-npm run build          # verify the static export still works
+pnpm check          # Biome (format + lint) and TypeScript
+pnpm lint:fix       # apply Biome formatting and safe lint fixes
+pnpm rust:fmt       # format the Rust core with rustfmt
+pnpm rust:clippy
+pnpm rust:test
+pnpm build          # verify the static export still works
 ```
 
 Notes:
