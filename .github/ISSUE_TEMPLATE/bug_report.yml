@@ -1,0 +1,69 @@
+name: Bug report
+description: Something in the app, the frontend, or the Rust bridge is broken.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. Please fill in as much as
+        you can; it makes the problem much easier to reproduce.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: The actual behavior, and what you expected instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Run `npm run tauri:dev`
+        2. ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Operating system
+      options:
+        - Windows
+        - macOS (Apple Silicon)
+        - macOS (Intel)
+        - Linux
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mode
+    attributes:
+      label: How are you running the app?
+      options:
+        - Desktop window (`npm run tauri:dev` or an installed build)
+        - Browser preview (`npm run dev`)
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: The app version from the window title or `package.json`, or a commit hash.
+      placeholder: 0.1.0
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Terminal output, DevTools console output, or the Rust panic message. Redact anything private.
+      render: shell
+    validations:
+      required: false

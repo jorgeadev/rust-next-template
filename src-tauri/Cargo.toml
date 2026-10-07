@@ -1,0 +1,30 @@
+[package]
+name = "rust-next-template"
+version = "0.1.0"
+description = "A desktop app template pairing a Rust core (Tauri) with a statically exported Next.js frontend."
+authors = ["jorgeadev"]
+license = "MIT"
+repository = "https://github.com/jorgeadev/rust-next-template"
+edition = "2024"
+rust-version = "1.90"
+
+[lib]
+name = "rust_next_template_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-log = "2"
+log = "0.4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true

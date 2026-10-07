@@ -1,26 +1,94 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --paper: #e8eaeb;
+  --panel: #f5f6f6;
+  --ink: #17191b;
+  --muted: #5c656a;
+  --line: #c8cdd0;
+  --rust: #a63d1e;
+  --on-accent: #fbf7f4;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --paper: #131517;
+    --panel: #191c1e;
+    --ink: #e7e9ea;
+    --muted: #98a1a6;
+    --line: #2c3135;
+    --rust: #e0764e;
+    --on-accent: #17191b;
   }
 }
 
+@theme inline {
+  --color-paper: var(--paper);
+  --color-panel: var(--panel);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-rust: var(--rust);
+  --color-on-accent: var(--on-accent);
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+}
+
+html {
+  color-scheme: light dark;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+::selection {
+  background: var(--rust);
+  color: var(--on-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 2px;
+}
+
+/* Signal travelling across the IPC wire while a command is in flight. */
+.signal {
+  stroke-dasharray: 3 17;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.signal-active {
+  opacity: 1;
+  animation: signal-flow 900ms linear infinite;
+}
+
+@keyframes signal-flow {
+  to {
+    stroke-dashoffset: 20;
+  }
+}
+
+.reveal {
+  animation: reveal 240ms ease-out both;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signal-active {
+    animation: none;
+    opacity: 1;
+  }
+
+  .reveal {
+    animation: none;
+  }
 }

@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# rust-next-template
 
-## Getting Started
+A GitHub template for desktop apps: a **Rust core** (Tauri 2) behind a **Next.js 16** frontend, statically exported and rendered in the system webview.
 
-First, run the development server:
+[![CI](https://github.com/jorgeadev/rust-next-template/actions/workflows/ci.yml/badge.svg)](https://github.com/jorgeadev/rust-next-template/actions/workflows/ci.yml)
+[![Release](https://github.com/jorgeadev/rust-next-template/actions/workflows/release.yml/badge.svg)](https://github.com/jorgeadev/rust-next-template/actions/workflows/release.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+                system webview                          rust process
+┌─────────────────────────────────────┐   IPC   ┌──────────────────────────────┐
+│  Next.js static export (`out/`)     │ ◀─────▶ │  Tauri core (`src-tauri/`)   │
+│  React 19 · Tailwind CSS 4          │         │  #[tauri::command] fn greet  │
+└─────────────────────────────────────┘         └──────────────────────────────┘
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The frontend builds to plain HTML/CSS/JS with `output: "export"`, so there is no Node.js runtime in the shipped app. Rust owns the window and the system APIs; the UI reaches them with typed `invoke()` calls over [Tauri's IPC](https://v2.tauri.app/develop/calling-rust/).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Requirements
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Node.js** 20.9 or newer (24 recommended)
+- **Rust** stable with `rustfmt` and `clippy` (see `rust-toolchain.toml`)
+- **Platform dependencies** for Tauri: [prerequisites guide](https://v2.tauri.app/start/prerequisites/)
 
-## Learn More
+## Quick start
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+npm run tauri:dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The first run compiles the Rust core, which takes a few minutes. Later runs are incremental.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
+| Command                 | What it does                                                                |
+| ----------------------- | --------------------------------------------------------------------------- |
+| `npm run tauri:dev`     | Runs the desktop app with hot reload for both the UI and the Rust core.     |
+| `npm run tauri:build`   | Bundles an installer for the current OS into `src-tauri/target/release/bundle/`. |
+| `npm run dev`           | Browser preview of the UI at `localhost:3000` (no Rust bridge).             |
+| `npm run build`         | Static export of the frontend into `out/`.                                  |
+| `npm run check`         | ESLint plus TypeScript typechecking.                                        |
+| `npm run rust:test`     | Runs the Rust unit tests.                                                   |
+| `npm run rust:clippy`   | Runs Clippy with warnings denied.                                           |
+| `npm run rust:fmt`      | Formats the Rust code.                                                      |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+├── src/                    # Next.js frontend
+│   ├── app/                # App Router pages, layout, global styles
+│   ├── components/         # React components (greet-demo.tsx is the IPC example)
+│   └── lib/ipc.ts          # Typed wrappers around the Rust commands
+├── src-tauri/              # Rust core
+│   ├── src/lib.rs          # Commands + the Tauri builder
+│   ├── src/main.rs         # Desktop entry point
+│   ├── capabilities/       # Permissions granted to the webview
+│   └── tauri.conf.json     # Window, bundle, and build configuration
+├── .github/workflows/      # CI and cross-platform release pipelines
+└── out/                    # Static export output (generated)
+```
+
+## Adding a Rust command
+
+1. Write the command in `src-tauri/src/lib.rs` and register it:
+
+   ```rust
+   #[tauri::command]
+   fn system_info() -> String {
+       std::env::consts::OS.to_string()
+   }
+
+   // in run():
+   .invoke_handler(tauri::generate_handler![greet, system_info])
+   ```
+
+2. Wrap it on the frontend in `src/lib/ipc.ts`:
+
+   ```ts
+   export function systemInfo() {
+     return invoke<string>("system_info");
+   }
+   ```
+
+3. Call it from a client component. `greet-demo.tsx` is a complete reference, including how to detect whether the Rust bridge is available with `isTauri()`.
+
+Permissions for plugins and APIs live in `src-tauri/capabilities/default.json`. The default capability only grants `core:default`; add scoped permissions as you adopt plugins.
+
+## Releases
+
+The app version has a single source of truth: `package.json`. `tauri.conf.json` reads it via `"version": "../package.json"`.
+
+```bash
+npm version patch        # or minor / major
+git push --follow-tags
+```
+
+Pushing a `v*` tag runs `.github/workflows/release.yml` and creates a **draft** GitHub release with installers for macOS (Apple Silicon and Intel), Linux, and Windows. Review the draft, then publish it. No signing secrets are required until you enable code signing or the updater; see the [Tauri distribution guides](https://v2.tauri.app/distribute/).
+
+## Make it yours
+
+- [ ] Click **Use this template** on GitHub (or push the files to a fresh repository), then enable it as a template in **Settings → General → Template repository**.
+- [ ] Rename the app: `productName` and the unique `identifier` (reverse-DNS, e.g. `com.yourname.yourapp`) in `src-tauri/tauri.conf.json`.
+- [ ] Replace the icons: `npx tauri icon path/to/icon.png`.
+- [ ] Update name, description, and repository URLs in `package.json`, `src-tauri/Cargo.toml`, and this README.
+- [ ] Update the copyright line in `LICENSE`.
+- [ ] Set a Content Security Policy for `app.security.csp` in `src-tauri/tauri.conf.json` before shipping (see [Tauri security](https://v2.tauri.app/security/csp/)).
+- [ ] Pick bundle targets and category in `src-tauri/tauri.conf.json` under `bundle`.
+
+## License
+
+[MIT](LICENSE)

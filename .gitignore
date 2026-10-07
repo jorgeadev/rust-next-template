@@ -15,7 +15,11 @@
 
 # next.js
 /.next/
-/out/
+
+# static export produced by `next build`. The placeholder keeps the folder in
+# git so cargo-only commands work on a fresh clone, before the first web build.
+/out/*
+!/out/.gitkeep
 
 # production
 /build
